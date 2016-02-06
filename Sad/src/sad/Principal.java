@@ -42,27 +42,22 @@ package sad;
 	    	Instances data;
 	    	data = lect.cargarDatos();
 	    	
-			
-			/////////////////////////////////////////////////////////////		
-			// 2. FEATURE SUBSET SELECTION	
+
+	    	/////////////Seleccion del Sub-set PREGUNTAR QUE HACE ESTO/////
 			
 	    	Seleccion sel=new Seleccion();
 	    	Instances dataSel = sel.selSubSet(data);
-	    	
-	  	
-			
+	    			
 
-			/////////////////////////////////////////////////////////////
-			// 3. CLASSIFY: 
-
-			// 3.0 Train the classifier (estimador) by means of:	the Naive Bayes algorithm (in this case)
+			// 3. Clasificar 
+	    	/////////////En este caso se usa Nayve bayes(esto es solo para el ejemplo)////
 			NaiveBayes estimador= new NaiveBayes();//Naive Bayes
 
 			// 3.1 Assess the performance of the classifier by means of 10-fold cross-validation 
 			//  HACER!!!! Empaquetar Bloque 3.1: como sub-clase						
 			Evaluation evaluator = new Evaluation(dataSel);
 			evaluator.crossValidateModel(estimador, dataSel, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
-			//  HACER!!!! Imprimir matriz de confusión
+		
 			double acc=evaluator.pctCorrect();
 			double inc=evaluator.pctIncorrect();
 			double kappa=evaluator.kappa();
@@ -79,9 +74,14 @@ package sad;
 			System.out.println("Root mean squared error  " + rmse);
 			System.out.println("Relative absolute error  " + rae);
 			System.out.println("Root relative squared error  " + rrse);	
+			for(int row_i=0; row_i<confMatrix.length; row_i++){
+	             for(int col_i=0; col_i<confMatrix.length; col_i++){
+	                 System.out.print(confMatrix[row_i][col_i]);
+	                 System.out.print("|");
+	             }
+	             System.out.println();
+	         }
 
-			
-			
 			/*
 			 // 3.2 Alternatively, assess the performance of the classifiera by means of hold-out: leaving the 30% of the data randomly selected out to test the model 
 			// 3.2.a Get the test set by randomly selecting the the 30% of the instances
