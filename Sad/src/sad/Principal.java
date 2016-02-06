@@ -44,17 +44,12 @@ package sad;
 	    	
 			
 			/////////////////////////////////////////////////////////////		
-			// 2. FEATURE SUBSET SELECTION
-			//  HACER!!!! Empaquetar Bloque 2: como sub-clase		
-			AttributeSelection filter= new AttributeSelection();
-			CfsSubsetEval eval = new CfsSubsetEval();
-			BestFirst search=new BestFirst();
-			filter.setEvaluator(eval);
-			filter.setSearch(search);
-			filter.setInputFormat(data);
-			// 2.1 Get new data set with the attribute sub-set
-			Instances newData = Filter.useFilter(data, filter);
+			// 2. FEATURE SUBSET SELECTION	
 			
+	    	Seleccion sel=new Seleccion();
+	    	Instances dataSel = sel.selSubSet(data);
+	    	
+	  	
 			
 
 			/////////////////////////////////////////////////////////////
@@ -65,8 +60,8 @@ package sad;
 
 			// 3.1 Assess the performance of the classifier by means of 10-fold cross-validation 
 			//  HACER!!!! Empaquetar Bloque 3.1: como sub-clase						
-			Evaluation evaluator = new Evaluation(newData);
-			evaluator.crossValidateModel(estimador, newData, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
+			Evaluation evaluator = new Evaluation(dataSel);
+			evaluator.crossValidateModel(estimador, dataSel, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
 			//  HACER!!!! Imprimir matriz de confusión
 			double acc=evaluator.pctCorrect();
 			double inc=evaluator.pctIncorrect();
