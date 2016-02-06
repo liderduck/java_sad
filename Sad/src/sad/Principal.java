@@ -37,14 +37,14 @@ package sad;
 		
 	    public static void main(String[] args) throws Exception {
 			
-	    	/////////////Lectura de datos INCOMPLETA//////////
+	    	/////////////Lectura de datos y aplica el filtro RANDOMIZE //////////
 	    	Lectura lect= new Lectura();
 	    	Instances data;
 	    	data = lect.cargarDatos();
 	    	
 
 	    	/////////////Seleccion del Sub-set PREGUNTAR QUE HACE ESTO/////
-			
+			//tambien aplica el filtro selectAtributes ojo
 	    	Seleccion sel=new Seleccion();
 	    	Instances dataSel = sel.selSubSet(data);
 	    			

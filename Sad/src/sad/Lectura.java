@@ -3,16 +3,8 @@ package sad;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Random;
-import weka.attributeSelection.BestFirst;
-import weka.attributeSelection.CfsSubsetEval;
-import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.lazy.IB1;
-import weka.core.Capabilities;
 import weka.core.Instances;
 import weka.filters.Filter;
-import weka.filters.supervised.attribute.AttributeSelection;
 import weka.filters.unsupervised.instance.Randomize;
 
 public class Lectura {
@@ -55,16 +47,17 @@ public class Lectura {
 		}
 		
 	
-		// 1.5. Shuffle the instances: apply Randomize filter
-		//  HACER!!!!
-		Randomize filter = new Randomize();
-		Instances data1 = Filter.useFilter(data, filter);
-
+		// 1.5. Aplica el filtro randomize
+	
+		Randomize filtroRand = new Randomize();
+		filtroRand.setInputFormat(data);
+		Instances datosRan = Filter.useFilter(data, filtroRand);
+	
 		
 		// 1.6. Specify which attribute will be used as the class: the last one, in this case 
-		data1.setClassIndex(data.numAttributes()-1);
+		datosRan.setClassIndex(data.numAttributes()-1);
 				
-		return data1;
+		return datosRan;
 	}
 	
 	
