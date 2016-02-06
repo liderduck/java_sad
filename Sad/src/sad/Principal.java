@@ -58,18 +58,21 @@ package sad;
 			Results resultados = new Results();
 			resultados.imprimirResultados(dataSel, estimador);//en estimado entra ahora nayvebayes pero debera cambiar.
 
-			/*
+			
+			
 			 // 3.2 Alternatively, assess the performance of the classifiera by means of hold-out: leaving the 30% of the data randomly selected out to test the model 
 			// 3.2.a Get the test set by randomly selecting the the 30% of the instances
-			int trainSize = (int) Math.round(newData.numInstances() * 0.7);
-			int testSize = newData.numInstances() - trainSize;
-			// HACER!!!! Salvar las instancias del test en un fichero
-			Instances train = new Instances(newData, 0, trainSize);
-			Instances test = new Instances(newData, trainSize, testSize);
 			
+			int trainSize = (int) Math.round(dataSel.numInstances() * 0.7);
+			int testSize = dataSel.numInstances() - trainSize;
+			
+			// HACER!!!! Salvar las instancias del test en un fichero
+			Instances train = new Instances(dataSel, 0, trainSize);
+			Instances test = new Instances(dataSel, trainSize, testSize);
+		
+			/*
 			// 3.2.b Train the classifier with the 70\% of the data by means of the Naive Bayes algorithm
 			estimador.buildClassifier(train);
-			
 			// 3.2.c Let the model predict the class for each instance in the test set
 			evaluator.evaluateModel(estimador, test);
 			double predictions[] = new double[test.numInstances()];
