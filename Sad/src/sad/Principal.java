@@ -37,6 +37,7 @@ package sad;
 		
 	    public static void main(String[] args) throws Exception {
 			
+	    	/////////////Lectura de datos INCOMPLETA//////////
 	    	Lectura lect= new Lectura();
 	    	Instances data;
 	    	data = lect.cargarDatos();
