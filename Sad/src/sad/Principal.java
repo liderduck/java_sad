@@ -51,39 +51,50 @@ package sad;
 
 			// 3. Clasificar 
 	    	/////////////En este caso se usa Nayve bayes(esto es solo para el ejemplo)////
-			NaiveBayes estimador= new NaiveBayes();//Naive Bayes
+			NaiveBayes estimador = new NaiveBayes();//Naive Bayes
 
 			// 3.1 Imprime resultados.
 			
 			Results resultados = new Results();
 			resultados.imprimirResultados(dataSel, estimador);//en estimado entra ahora nayvebayes pero debera cambiar.
 
-			
+			///hasta este punto funciona todo
 			
 			 // 3.2 Alternatively, assess the performance of the classifiera by means of hold-out: leaving the 30% of the data randomly selected out to test the model 
 			// 3.2.a Get the test set by randomly selecting the the 30% of the instances
 			
 			int trainSize = (int) Math.round(dataSel.numInstances() * 0.7);
 			int testSize = dataSel.numInstances() - trainSize;
+			Escribir esc=new Escribir();
 			
 			// HACER!!!! Salvar las instancias del test en un fichero
 			Instances train = new Instances(dataSel, 0, trainSize);
 			Instances test = new Instances(dataSel, trainSize, testSize);
-		
-			/*
+			
+			esc.escribir(null,test);
+			
 			// 3.2.b Train the classifier with the 70\% of the data by means of the Naive Bayes algorithm
 			estimador.buildClassifier(train);
+			
+			
 			// 3.2.c Let the model predict the class for each instance in the test set
+			Evaluation evaluator = new Evaluation(test);
+			
 			evaluator.evaluateModel(estimador, test);
 			double predictions[] = new double[test.numInstances()];
 			for (int i = 0; i < test.numInstances(); i++) {
-				predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction((Classifier)estimador, test.instance(i));
+				predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
 			}
-			// HACER!!!! Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
 			
+			//  Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
+			
+			esc.escribir(predictions,null);
+			
+			/*
 			// 3.2.d Assess the performance on the test
 			//  HACER!!!! Idéntico idéntico idéntico al 3.1: por eso es necesario que sea modular, no vamos a copiar aquí el código de nuevo!
 			*/
+			resultados.imprimirResultados(test, estimador);
 			///////////////////////////////////////////////////////
 			// Observa: http://weka.wikispaces.com/Use+Weka+in+your+Java+code
 			///////////////////////////////////////////////////////

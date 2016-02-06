@@ -8,6 +8,7 @@ import weka.core.Instances;
 public class Results {
 	
 	public void imprimirResultados(Instances dataSel,NaiveBayes estimador) throws Exception{
+		
 		Evaluation evaluator = new Evaluation(dataSel);
 		evaluator.crossValidateModel(estimador, dataSel, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
 	
