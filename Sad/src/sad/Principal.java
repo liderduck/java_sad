@@ -18,17 +18,9 @@ package sad;
 	 */
 
 
-	import java.io.IOException;
-	import java.util.Random;
-	import weka.attributeSelection.BestFirst;
-	import weka.attributeSelection.CfsSubsetEval;
 	import weka.classifiers.Evaluation;
 	import weka.classifiers.bayes.NaiveBayes;
-	import weka.classifiers.lazy.IB1;
-	import weka.core.Capabilities;
 	import weka.core.Instances;
-	import weka.filters.Filter;
-	import weka.filters.supervised.attribute.AttributeSelection;
 
 
 	public class Principal {
@@ -55,8 +47,8 @@ package sad;
 			
 			Results resultados = new Results();
 			resultados.imprimirResultados(dataSel, estimador);//en estimado entra ahora nayvebayes pero debera cambiar.
-
-			///hasta este punto funciona todo
+			System.out.println("///////////////////////////////");
+			///hasta este punto funciona todo,,usando randomize, selectatributes y naive vayes
 			
 			 // 3.2 Alternatively, assess the performance of the classifiera by means of hold-out: leaving the 30% of the data randomly selected out to test the model 
 			// 3.2.a Get the test set by randomly selecting the the 30% of the instances

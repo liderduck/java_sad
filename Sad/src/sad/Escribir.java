@@ -2,6 +2,7 @@ package sad;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
+
 import weka.core.Instances;
 
 
@@ -33,10 +34,18 @@ public class Escribir {
 			FileWriter fichero = null;
 			PrintWriter pw = null;
 			try{
+				int z=0;
 				fichero=new FileWriter ("C:\\Users\\anahe\\Desktop\\clases1.txt");
 				pw= new PrintWriter(fichero);
-					pw.print(inst);
+				int ultimo =  inst.numInstances();
+				
+				while(z != ultimo){
+					pw.print(inst.instance(z));
 					pw.println();
+					z++;
+				}
+				
+					
 			}catch (Exception e){
 				e.printStackTrace();
 			}finally{
