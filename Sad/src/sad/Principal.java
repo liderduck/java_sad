@@ -53,34 +53,10 @@ package sad;
 	    	/////////////En este caso se usa Nayve bayes(esto es solo para el ejemplo)////
 			NaiveBayes estimador= new NaiveBayes();//Naive Bayes
 
-			// 3.1 Assess the performance of the classifier by means of 10-fold cross-validation 
-			//  HACER!!!! Empaquetar Bloque 3.1: como sub-clase						
-			Evaluation evaluator = new Evaluation(dataSel);
-			evaluator.crossValidateModel(estimador, dataSel, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
-		
-			double acc=evaluator.pctCorrect();
-			double inc=evaluator.pctIncorrect();
-			double kappa=evaluator.kappa();
-			double mae=evaluator.meanAbsoluteError();    
-			double rmse=evaluator.rootMeanSquaredError();
-			double rae=evaluator.relativeAbsoluteError();
-			double rrse=evaluator.rootRelativeSquaredError();
-			double confMatrix[][]= evaluator.confusionMatrix();
+			// 3.1 Imprime resultados.
 			
-			System.out.println("Correctly Classified Instances  " + acc);
-			System.out.println("Incorrectly Classified Instances  " + inc);
-			System.out.println("Kappa statistic  " + kappa);
-			System.out.println("Mean absolute error  " + mae);
-			System.out.println("Root mean squared error  " + rmse);
-			System.out.println("Relative absolute error  " + rae);
-			System.out.println("Root relative squared error  " + rrse);	
-			for(int row_i=0; row_i<confMatrix.length; row_i++){
-	             for(int col_i=0; col_i<confMatrix.length; col_i++){
-	                 System.out.print(confMatrix[row_i][col_i]);
-	                 System.out.print("|");
-	             }
-	             System.out.println();
-	         }
+			Results resultados = new Results();
+			resultados.imprimirResultados(dataSel, estimador);//en estimado entra ahora nayvebayes pero debera cambiar.
 
 			/*
 			 // 3.2 Alternatively, assess the performance of the classifiera by means of hold-out: leaving the 30% of the data randomly selected out to test the model 

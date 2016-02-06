@@ -13,10 +13,11 @@ import weka.core.Capabilities;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
+import weka.filters.unsupervised.instance.Randomize;
 
 public class Lectura {
 
-	public Instances cargarDatos(){
+	public Instances cargarDatos() throws Exception{
 		/////////////////////////////////////////////////////////////
 		// 1. LOAD DATA FILE
 		//  HACER!!!! Bloque 1: como sub-clase
@@ -53,13 +54,17 @@ public class Lectura {
 			// TODO Auto-generated catch block
 		}
 		
+	
 		// 1.5. Shuffle the instances: apply Randomize filter
 		//  HACER!!!!
+		Randomize filter = new Randomize();
+		Instances data1 = Filter.useFilter(data, filter);
+
 		
 		// 1.6. Specify which attribute will be used as the class: the last one, in this case 
-		data.setClassIndex(data.numAttributes()-1);
+		data1.setClassIndex(data.numAttributes()-1);
 				
-		return data;
+		return data1;
 	}
 	
 	

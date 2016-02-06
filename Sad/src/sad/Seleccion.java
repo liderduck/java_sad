@@ -5,7 +5,7 @@ import weka.attributeSelection.CfsSubsetEval;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
-
+//AQUI ARRIBA VEMOS LA RUTA DEL FILTRO QUE VAMOS A USAR
 public class Seleccion {
 		
 	
