@@ -81,10 +81,7 @@ import weka.core.Instances;
 			Evaluation evaluator2 = new Evaluation(test);
 			evaluator2.evaluateModel(estimador, test);
 			
-			//sustituye al for de abajo,contruyendo el evaluador le podemos preguntar todo,lo mismo
-			//que hacemos dentro de results
-			//System.out.println(evaluator2.pctCorrect() + " accuracy....");
-			
+			//for para sacar las clases y escribirlas en un doc luego
 			
 			/*double predictions[] = new double[test.numInstances()];
 				for (int i = 0; i < test.numInstances(); i++) {
@@ -95,10 +92,9 @@ import weka.core.Instances;
 			
 			//esc.escribir(predictions,null);
 			
-			/*
+			
 			// 3.2.d Assess the performance on the test
-			//  HACER!!!! Idéntico idéntico idéntico al 3.1: por eso es necesario que sea modular, no vamos a copiar aquí el código de nuevo!
-			*/
+		
 			resultados.imprimirResultados(test, evaluator2);
 			///////////////////////////////////////////////////////
 			// Observa: http://weka.wikispaces.com/Use+Weka+in+your+Java+code
