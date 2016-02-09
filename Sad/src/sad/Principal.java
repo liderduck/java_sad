@@ -18,11 +18,7 @@ package sad;
 	 */
 
 
-	import java.util.Random;
-
-
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
 import weka.classifiers.lazy.IBk;
 
