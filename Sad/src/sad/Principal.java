@@ -20,9 +20,11 @@ package sad;
 
 	import java.util.Random;
 
+
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.core.Instances;
+import weka.classifiers.lazy.IBk;
 
 
 	public class Principal {
@@ -35,21 +37,25 @@ import weka.core.Instances;
 	    	data = lect.cargarDatos();
 	    	
 	    	
-	    	/////////////Seleccion del Sub-set PREGUNTAR QUE HACE ESTO/////
+	    	/////////////Seleccion del Sub-set /////
 			//tambien aplica el filtro selectAtributes ojo
 	    	Seleccion sel=new Seleccion();
 	    	Instances dataSel = sel.selSubSet(data);
 	    			
 			
-	    	// 3. Clasificar 
-	    	/////////////En este caso se usa Nayve bayes(esto es solo para el ejemplo)////
-			NaiveBayes estimador = new NaiveBayes();//Naive Bayes
-
+	    	// Creamos el clasificador
 			
-			//creo el evaluador
-			Evaluation evaluator = new Evaluation(dataSel);
-			evaluator.crossValidateModel(estimador, dataSel, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
+	    	//NaiveBayes estimador = new NaiveBayes();//Naive Bayes
+	    	IBk estimador = new IBk();
+			estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk
+			
+			//Creamos el evaluador kfold de 10 valores
+			
+			Evaluation evaluator=sel.evalKFold(dataSel, estimador);
+			
 		
+			System.out.println(evaluator.fMeasure(0));
+			
 			// 3.1 Imprime resultados.
 			
 			Results resultados = new Results();
@@ -57,16 +63,15 @@ import weka.core.Instances;
 			
 			
 			System.out.println("///////////////////////////////");
-			///hasta este punto funciona todo,,usando randomize, selectatributes y naive vayes
 			
-			 // 3.2 Alternatively, assess the performance of the classifiera by means of hold-out: leaving the 30% of the data randomly selected out to test the model 
-			// 3.2.a Get the test set by randomly selecting the the 30% of the instances
+			
+			 // ahora usando un Hold out al 70%
 			
 			int trainSize = (int) Math.round(dataSel.numInstances() * 0.7);
 			int testSize = dataSel.numInstances() - trainSize;
 			Escribir esc=new Escribir();
 			
-			// HACER!!!! Salvar las instancias del test en un fichero
+			// creamos las instances de entrenamiento y de testeo
 			Instances train = new Instances(dataSel, 0, trainSize);
 			Instances test = new Instances(dataSel, trainSize, testSize);
 			
@@ -86,14 +91,14 @@ import weka.core.Instances;
 			/*double predictions[] = new double[test.numInstances()];
 				for (int i = 0; i < test.numInstances(); i++) {
 					predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
-				}*/
+				}
 
 			//  Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
 			
-			//esc.escribir(predictions,null);
+			esc.escribir(predictions,null);
+			*/
 			
-			
-			// 3.2.d Assess the performance on the test
+			// Imprime los resultados del hold out
 		
 			resultados.imprimirResultados(test, evaluator2);
 			///////////////////////////////////////////////////////
