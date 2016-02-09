@@ -78,7 +78,6 @@ import weka.core.Instances;
 			
 			// 3.2.c Let the model predict the class for each instance in the test set
 			
-			
 			Evaluation evaluator2 = new Evaluation(test);
 			evaluator2.evaluateModel(estimador, test);
 			
@@ -87,14 +86,14 @@ import weka.core.Instances;
 			//System.out.println(evaluator2.pctCorrect() + " accuracy....");
 			
 			
-			double predictions[] = new double[test.numInstances()];
+			/*double predictions[] = new double[test.numInstances()];
 				for (int i = 0; i < test.numInstances(); i++) {
 					predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
-				}
+				}*/
 
 			//  Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
 			
-			esc.escribir(predictions,null);
+			//esc.escribir(predictions,null);
 			
 			/*
 			// 3.2.d Assess the performance on the test

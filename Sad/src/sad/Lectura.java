@@ -49,15 +49,15 @@ public class Lectura {
 	
 		// 1.5. Aplica el filtro randomize(no usado por ahora)
 	
-		//Randomize filtroRand = new Randomize();//creamos el filtro
-	//	filtroRand.setInputFormat(data);//le asignamos los datos a filtrar
-		//Instances datosRan = Filter.useFilter(data, filtroRand);//creamos las nuevas instances usando el filtro.<
+		Randomize filtroRand = new Randomize();//creamos el filtro
+		filtroRand.setInputFormat(data);//le asignamos los datos a filtrar
+		Instances datosRan = Filter.useFilter(data, filtroRand);//creamos las nuevas instances usando el filtro.<
 	
 		
 		// 1.6. Specify which attribute will be used as the class: the last one, in this case 
-		data.setClassIndex(data.numAttributes()-1);
+		datosRan.setClassIndex(data.numAttributes()-1);
 				
-		return data;
+		return datosRan;
 	}
 	
 	
