@@ -34,17 +34,18 @@ import weka.core.Instances;
 	    	Instances data;
 	    	data = lect.cargarDatos();
 	    	
-
+	    	
 	    	/////////////Seleccion del Sub-set PREGUNTAR QUE HACE ESTO/////
 			//tambien aplica el filtro selectAtributes ojo
 	    	Seleccion sel=new Seleccion();
 	    	Instances dataSel = sel.selSubSet(data);
 	    			
-
-			// 3. Clasificar 
+			
+	    	// 3. Clasificar 
 	    	/////////////En este caso se usa Nayve bayes(esto es solo para el ejemplo)////
 			NaiveBayes estimador = new NaiveBayes();//Naive Bayes
 
+			
 			//creo el evaluador
 			Evaluation evaluator = new Evaluation(dataSel);
 			evaluator.crossValidateModel(estimador, dataSel, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
@@ -83,17 +84,17 @@ import weka.core.Instances;
 			
 			//sustituye al for de abajo,contruyendo el evaluador le podemos preguntar todo,lo mismo
 			//que hacemos dentro de results
-			System.out.println(evaluator2.pctCorrect() + " accuracy....");
+			//System.out.println(evaluator2.pctCorrect() + " accuracy....");
 			
-					/*double predictions[] = new double[test.numInstances()];
-					for (int i = 0; i < test.numInstances(); i++) {
-						predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
-					}
-					 */
+			
+			double predictions[] = new double[test.numInstances()];
+				for (int i = 0; i < test.numInstances(); i++) {
+					predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
+				}
 
 			//  Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
 			
-		//	esc.escribir(predictions,null);
+			esc.escribir(predictions,null);
 			
 			/*
 			// 3.2.d Assess the performance on the test
@@ -103,8 +104,7 @@ import weka.core.Instances;
 			///////////////////////////////////////////////////////
 			// Observa: http://weka.wikispaces.com/Use+Weka+in+your+Java+code
 			///////////////////////////////////////////////////////
-			
-			
+
 	    }
 }
 
