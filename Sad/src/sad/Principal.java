@@ -18,9 +18,11 @@ package sad;
 	 */
 
 
-	import weka.classifiers.Evaluation;
-	import weka.classifiers.bayes.NaiveBayes;
-	import weka.core.Instances;
+	import java.util.Random;
+
+import weka.classifiers.Evaluation;
+import weka.classifiers.bayes.NaiveBayes;
+import weka.core.Instances;
 
 
 	public class Principal {
@@ -43,10 +45,16 @@ package sad;
 	    	/////////////En este caso se usa Nayve bayes(esto es solo para el ejemplo)////
 			NaiveBayes estimador = new NaiveBayes();//Naive Bayes
 
+			//creo el evaluador
+			Evaluation evaluator = new Evaluation(dataSel);
+			evaluator.crossValidateModel(estimador, dataSel, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
+		
 			// 3.1 Imprime resultados.
 			
 			Results resultados = new Results();
-			resultados.imprimirResultados(dataSel, estimador);//en estimado entra ahora nayvebayes pero debera cambiar.
+			resultados.imprimirResultados(dataSel, evaluator);//en estimado entra ahora nayvebayes pero debera cambiar.
+			
+			
 			System.out.println("///////////////////////////////");
 			///hasta este punto funciona todo,,usando randomize, selectatributes y naive vayes
 			
@@ -68,23 +76,30 @@ package sad;
 			
 			
 			// 3.2.c Let the model predict the class for each instance in the test set
-			Evaluation evaluator = new Evaluation(test);
 			
-			evaluator.evaluateModel(estimador, test);
-			double predictions[] = new double[test.numInstances()];
-			for (int i = 0; i < test.numInstances(); i++) {
-				predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
-			}
 			
+			Evaluation evaluator2 = new Evaluation(test);
+			evaluator2.evaluateModel(estimador, test);
+			
+			//sustituye al for de abajo,contruyendo el evaluador le podemos preguntar todo,lo mismo
+			//que hacemos dentro de results
+			System.out.println(evaluator2.pctCorrect() + " accuracy....");
+			
+					/*double predictions[] = new double[test.numInstances()];
+					for (int i = 0; i < test.numInstances(); i++) {
+						predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
+					}
+					 */
+
 			//  Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
 			
-			esc.escribir(predictions,null);
+		//	esc.escribir(predictions,null);
 			
 			/*
 			// 3.2.d Assess the performance on the test
 			//  HACER!!!! Idéntico idéntico idéntico al 3.1: por eso es necesario que sea modular, no vamos a copiar aquí el código de nuevo!
 			*/
-			resultados.imprimirResultados(test, estimador);
+			resultados.imprimirResultados(test, evaluator2);
 			///////////////////////////////////////////////////////
 			// Observa: http://weka.wikispaces.com/Use+Weka+in+your+Java+code
 			///////////////////////////////////////////////////////

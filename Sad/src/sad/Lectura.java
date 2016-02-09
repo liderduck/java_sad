@@ -26,7 +26,7 @@ public class Lectura {
 		// 1.2. Open the file
 		FileReader fi=null;
 		try {
-			fi= new FileReader("C:\\Users\\anahe\\Desktop\\breast-cancer.arff"); //(args[0]) <-> ("~/software/weka-3-6-9/data/breast-cancer.arff" )
+			fi= new FileReader("C:\\Users\\jonathan\\Downloads\\breast-cancer.arff"); //(args[0]) <-> ("~/software/weka-3-6-9/data/breast-cancer.arff" )
 		} catch (FileNotFoundException e) {
 				System.out.println("ERROR: Revisar path del fichero de datos:"/*+ruta*/);
 		}
@@ -47,17 +47,17 @@ public class Lectura {
 		}
 		
 	
-		// 1.5. Aplica el filtro randomize
+		// 1.5. Aplica el filtro randomize(no usado por ahora)
 	
-		Randomize filtroRand = new Randomize();//creamos el filtro
-		filtroRand.setInputFormat(data);//le asignamos los datos a filtrar
-		Instances datosRan = Filter.useFilter(data, filtroRand);//creamos las nuevas instances usando el filtro.<
+		//Randomize filtroRand = new Randomize();//creamos el filtro
+	//	filtroRand.setInputFormat(data);//le asignamos los datos a filtrar
+		//Instances datosRan = Filter.useFilter(data, filtroRand);//creamos las nuevas instances usando el filtro.<
 	
 		
 		// 1.6. Specify which attribute will be used as the class: the last one, in this case 
-		datosRan.setClassIndex(data.numAttributes()-1);
+		data.setClassIndex(data.numAttributes()-1);
 				
-		return datosRan;
+		return data;
 	}
 	
 	
