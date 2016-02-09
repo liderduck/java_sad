@@ -6,7 +6,6 @@ import weka.attributeSelection.BestFirst;
 import weka.attributeSelection.CfsSubsetEval;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.lazy.IBk;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
@@ -33,6 +32,14 @@ public class Seleccion {
 		
 		Evaluation evaluator = new Evaluation(dataSel);
 		evaluator.crossValidateModel(estimador, dataSel, 10, new Random(1)); // Random(1): the seed=1 means "no shuffle" :-!
+		
+		return evaluator;
+	}
+	
+	public Evaluation holdOut (Instances test,Classifier estimador) throws Exception{
+		
+		Evaluation evaluator = new Evaluation(test);
+		evaluator.evaluateModel(estimador, test);
 		
 		return evaluator;
 	}

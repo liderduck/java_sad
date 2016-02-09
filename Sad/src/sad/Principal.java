@@ -30,75 +30,69 @@ import weka.classifiers.lazy.IBk;
 	public class Principal {
 		
 	    public static void main(String[] args) throws Exception {
-			
-	    	/////////////Lectura de datos y aplica el filtro RANDOMIZE //////////
+			Seleccion sel=new Seleccion();
+	    	Results resultados = new Results();
+	    	Escribir esc=new Escribir();
+	    	
+	    	/////////////Lectura de datos y aplica el filtro RANDOMIZE/////////////
 	    	Lectura lect= new Lectura();
 	    	Instances data;
 	    	data = lect.cargarDatos();
 	    	
 	    	
-	    	/////////////Seleccion del Sub-set /////
+	    	/////////////Seleccion del Sub-set/////////////
 			//tambien aplica el filtro selectAtributes ojo
-	    	Seleccion sel=new Seleccion();
+	    	
 	    	Instances dataSel = sel.selSubSet(data);
 	    			
 			
-	    	// Creamos el clasificador
+	    	/////////////Creamos el clasificador/////////////
 			
 	    	//NaiveBayes estimador = new NaiveBayes();//Naive Bayes
 	    	IBk estimador = new IBk();
 			estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk
 			
-			//Creamos el evaluador kfold de 10 valores
-			
+			//Creamos el evaluador kfold de 10 valores, pasandole los datos y el  clasificador
 			Evaluation evaluator=sel.evalKFold(dataSel, estimador);
+
+			System.out.println(evaluator.fMeasure(0));//sacamos el fmeasure..pero creo k esta mal
 			
-		
-			System.out.println(evaluator.fMeasure(0));
-			
-			// 3.1 Imprime resultados.
-			
-			Results resultados = new Results();
+			/////////////Imprime resultados./////////////
 			resultados.imprimirResultados(dataSel, evaluator);//en estimado entra ahora nayvebayes pero debera cambiar.
-			
 			
 			System.out.println("///////////////////////////////");
 			
-			
-			 // ahora usando un Hold out al 70%
+			/////////////ahora usando un Hold out al 70%/////////////
 			
 			int trainSize = (int) Math.round(dataSel.numInstances() * 0.7);
 			int testSize = dataSel.numInstances() - trainSize;
-			Escribir esc=new Escribir();
 			
-			// creamos las instances de entrenamiento y de testeo
+			/////////////creamos las instances de entrenamiento y de testeo/////////////
 			Instances train = new Instances(dataSel, 0, trainSize);
 			Instances test = new Instances(dataSel, trainSize, testSize);
 			
 			esc.escribir(null,test);
 			
-			// 3.2.b Train the classifier with the 70\% of the data by means of the Naive Bayes algorithm
+			/////////////Train the classifier with the 70\% of the data by means of the Naive Bayes algorithm/////////////
 			estimador.buildClassifier(train);
 			
 			
-			// 3.2.c Let the model predict the class for each instance in the test set
-			
-			Evaluation evaluator2 = new Evaluation(test);
-			evaluator2.evaluateModel(estimador, test);
-			
-			//for para sacar las clases y escribirlas en un doc luego
+			/////////////Let the model predict the class for each instance in the test set/////////////
+			Evaluation evaluator2=sel.holdOut(test, estimador);
+					
+			/////////////for para sacar las clases y escribirlas en un doc luego/////////////
 			
 			/*double predictions[] = new double[test.numInstances()];
 				for (int i = 0; i < test.numInstances(); i++) {
 					predictions[i] = evaluator.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
 				}
 
-			//  Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
+			/////////////Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
 			
 			esc.escribir(predictions,null);
 			*/
 			
-			// Imprime los resultados del hold out
+			/////////////Imprime los resultados del hold out/////////////
 		
 			resultados.imprimirResultados(test, evaluator2);
 			///////////////////////////////////////////////////////
