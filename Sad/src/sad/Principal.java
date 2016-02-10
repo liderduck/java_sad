@@ -48,7 +48,7 @@ import weka.classifiers.lazy.IBk;
 	    	IBk estimador = new IBk();
 			estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk
 			
-			//Creamos el evaluador kfold de 10 valores, pasandole los datos y el  clasificador
+			/////////////Creamos el evaluador kfold de 10 valores, pasandole los datos y el  clasificador
 			Evaluation evaluator=sel.evalKFold(dataSel, estimador);
 
 			System.out.println(evaluator.fMeasure(0));//sacamos el fmeasure..pero creo k esta mal
