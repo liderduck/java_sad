@@ -59,9 +59,5 @@ public class Lectura {
 				
 		return datosRan;
 	}
-	
-	
-	
-	
-	
+
 }
