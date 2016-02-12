@@ -47,7 +47,7 @@ public class Lectura {
 		}
 		
 	
-		// 1.5. Aplica el filtro randomize(no usado por ahora)
+		// 1.5. Aplica el filtro randomize
 	
 		Randomize filtroRand = new Randomize();//creamos el filtro
 		filtroRand.setInputFormat(data);//le asignamos los datos a filtrar
