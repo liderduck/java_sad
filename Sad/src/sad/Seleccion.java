@@ -6,6 +6,7 @@ import weka.attributeSelection.BestFirst;
 import weka.attributeSelection.CfsSubsetEval;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
+import weka.classifiers.lazy.IBk;
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
@@ -42,5 +43,27 @@ public class Seleccion {
 		evaluator.evaluateModel(estimador, test);
 		
 		return evaluator;
+	}
+	//caso particular para el ibk
+	public void mejorK(IBk estimador,Instances dataSel,Evaluation evaluator) throws Exception{
+		double mejorFM = 0;
+		double actualFM= 0;
+		int mejorK=1;
+		estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk
+		evaluator = evalKFold(dataSel, estimador);
+		mejorFM=evaluator.fMeasure(0);
+		for(int k=2;k<=10;k++){
+			estimador.setKNN(k);//esto sirve para añadir los vecinos al ibk
+			evaluator = evalKFold(dataSel, estimador);
+			actualFM=evaluator.fMeasure(0);
+			if (actualFM>mejorFM){
+				mejorFM=actualFM;
+				mejorK=k;
+			}
+		}
+		
+		
+		
+		System.out.println("la mejor f-measure es: "+mejorFM+"con una K de: "+mejorK);//el 0 es la clase prioritaria
 	}
 }
