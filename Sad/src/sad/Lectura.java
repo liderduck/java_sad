@@ -26,7 +26,7 @@ public class Lectura {
 		// 1.2. Open the file
 		FileReader fi=null;
 		try {
-			fi= new FileReader("C:\\Users\\anahe\\Desktop\\breast-cancer.arff"); //(args[0]) <-> ("~/software/weka-3-6-9/data/breast-cancer.arff" )
+			fi= new FileReader("C:\\Users\\jonathan\\Downloads\\breast-cancer.arff"); //(args[0]) <-> ("~/software/weka-3-6-9/data/breast-cancer.arff" )
 		} catch (FileNotFoundException e) {
 				System.out.println("ERROR: Revisar path del fichero de datos:"/*+ruta*/);
 		}
