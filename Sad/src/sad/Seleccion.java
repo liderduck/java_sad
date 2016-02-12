@@ -52,7 +52,7 @@ public class Seleccion {
 		estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk
 		evaluator = evalKFold(dataSel, estimador);
 		mejorFM=evaluator.fMeasure(0);
-		for(int k=2;k<=30;k++){//aumenta los vecinos y los va probando
+		for(int k=2;k<=dataSel.numInstances();k++){//aumenta los vecinos y los va probando
 			estimador.setKNN(k);
 			evaluator = evalKFold(dataSel, estimador);
 			actualFM=evaluator.fMeasure(0);
