@@ -112,7 +112,7 @@ public class Seleccion {
 			mejorDistancia="Chebyshev";
 		}
 		
-		System.out.println("la mejor f-measure es: "+mejorFM+"con una K de: "+mejorK+" en la distancia: "+ mejorDistancia);
+		System.out.println("La mejor f-measure es: "+mejorFM+" con una K de: "+mejorK+" en la distancia: "+ mejorDistancia);
 		//
 
 	}
