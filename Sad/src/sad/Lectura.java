@@ -62,7 +62,7 @@ public class Lectura {
 		Instances datosRan = Filter.useFilter(data, filtroRand);//creamos las nuevas instances usando el filtro.<
 	
 		
-		// 1.6. Specify which attribute will be used as the class: the last one, in this case 
+		// 1.6. Especificamos que la clase es el ultimo
 		datosRan.setClassIndex(data.numAttributes()-1);
 				
 		return datosRan;

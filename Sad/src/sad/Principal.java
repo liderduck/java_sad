@@ -47,8 +47,8 @@ import weka.classifiers.lazy.IBk;
 	    	
 	    	/////////////Creamos el evaluador kfold de 10 valores, pasandole los datos y el  clasificador
 	    	Evaluation evaluator =sel.evalKFold(dataSel, estimador);
-	    	
 	    	sel.mejorK(estimador,dataSel,evaluator);//caso particular para el IBk
+	    	
 	    	/////////////Imprime resultados./////////////
 		//	resultados.imprimirResultados(dataSel, evaluator);//en estimado entra ahora nayvebayes pero debera cambiar.
 			

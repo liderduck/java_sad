@@ -7,7 +7,12 @@ import weka.attributeSelection.CfsSubsetEval;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.lazy.IBk;
+import weka.core.ChebyshevDistance;
+import weka.core.EditDistance;
+import weka.core.EuclideanDistance;
 import weka.core.Instances;
+import weka.core.ManhattanDistance;
+import weka.core.neighboursearch.LinearNNSearch;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
 //AQUI ARRIBA VEMOS LA RUTA DEL FILTRO QUE VAMOS A USAR
@@ -44,26 +49,71 @@ public class Seleccion {
 		
 		return evaluator;
 	}
+	
 	//caso particular para el ibk
 	public void mejorK(IBk estimador,Instances dataSel,Evaluation evaluator) throws Exception{
 		double mejorFM = 0;
 		double actualFM= 0;
 		int mejorK=1;
-		estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk
-		evaluator = evalKFold(dataSel, estimador);
-		mejorFM=evaluator.fMeasure(0);
-		for(int k=2;k<=dataSel.numInstances();k++){//aumenta los vecinos y los va probando
-			estimador.setKNN(k);
-			evaluator = evalKFold(dataSel, estimador);
-			actualFM=evaluator.fMeasure(0);
-			if (actualFM>mejorFM){
-				mejorFM=actualFM;
-				mejorK=k;
+		int mejorDis=0;
+		String mejorDistancia="";
+		
+		estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk empezamos x el minimo 2
+		evaluator = evalKFold(dataSel, estimador);//usamos el crosvalidation
+		mejorFM=evaluator.fMeasure(0);//cogemos como mejor fmeasure la primera por defecto para ir comprobando hay que pasarle la clase prioritaria en este caso 0
+		
+		//creamos las 4 distancias
+		EuclideanDistance euclDis= new EuclideanDistance();
+		ManhattanDistance manhDis = new ManhattanDistance();
+		EditDistance edDis = new EditDistance();
+		ChebyshevDistance chebDis = new ChebyshevDistance();
+		
+		
+		//creamos este for para ir pasando entre las distancias
+		for (int z=0;z<4;z++){
+			if (z==0){
+				//preparamos el parametro de la distancia con una de las 4 escogidas arriba y preparamos el estimador
+				LinearNNSearch distancia= new LinearNNSearch();
+				distancia.setDistanceFunction(euclDis);
+				estimador.setNearestNeighbourSearchAlgorithm(distancia);
+			}else if (z==1){
+				LinearNNSearch distancia= new LinearNNSearch();
+				distancia.setDistanceFunction(manhDis);
+				estimador.setNearestNeighbourSearchAlgorithm(distancia);
+			}else if (z==2){
+				LinearNNSearch distancia= new LinearNNSearch();
+				distancia.setDistanceFunction(edDis);
+				estimador.setNearestNeighbourSearchAlgorithm(distancia);
+			}else if(z==3){
+				LinearNNSearch distancia= new LinearNNSearch();
+				distancia.setDistanceFunction(chebDis);
+				estimador.setNearestNeighbourSearchAlgorithm(distancia);
+			}
+			
+			for(int k=2;k<=dataSel.numInstances();k++){//aumenta los vecinos y los va probando
+				estimador.setKNN(k);
+				evaluator = evalKFold(dataSel, estimador);
+				actualFM=evaluator.fMeasure(0);
+				if (actualFM>mejorFM){
+					mejorFM=actualFM;
+					mejorK=k;
+					mejorDis=z;
+				}
 			}
 		}
 		
+		if (mejorDis==0){
+			mejorDistancia="Euclidean";
+		}else if (mejorDis==1){
+			mejorDistancia="Manhattan";
+		}else if (mejorDis==2){
+			mejorDistancia="EditDistance";
+		}else if (mejorDis==3){
+			mejorDistancia="Chebyshev";
+		}
 		
-		
-		System.out.println("la mejor f-measure es: "+mejorFM+"con una K de: "+mejorK);//el 0 es la clase prioritaria
+		System.out.println("la mejor f-measure es: "+mejorFM+"con una K de: "+mejorK+" en la distancia: "+ mejorDistancia);
+		//
+
 	}
 }

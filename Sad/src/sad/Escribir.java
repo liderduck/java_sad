@@ -69,7 +69,6 @@ public class Escribir {
 			predictions[i] = evaluator2.evaluateModelOnceAndRecordPrediction(estimador, test.instance(i));
 		}
 		/////////////Guardar en un fichero de salida la clase estimada por el modelo para cada instancia del test y así después podremos comparar la clase real y la estimada
-		
 		escribir(predictions,null);
 	}
 }
