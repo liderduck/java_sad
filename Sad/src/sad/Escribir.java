@@ -16,7 +16,7 @@ public class Escribir {
 			FileWriter fichero = null;
 			PrintWriter pw = null;
 			try{
-				fichero=new FileWriter ("C:\\Users\\jonathan\\Downloads\\clases.txt");
+				fichero=new FileWriter ("C:\\Users\\anahe\\Desktop\\clases.txt");
 				pw= new PrintWriter(fichero);
 				for (int z=0;z< predictions.length;z++){
 					pw.print(predictions[z]);
@@ -38,7 +38,7 @@ public class Escribir {
 			PrintWriter pw = null;
 			try{
 				int z=0;
-				fichero=new FileWriter ("C:\\Users\\jonathan\\Downloads\\test.txt");
+				fichero=new FileWriter ("C:\\Users\\anahe\\Desktop\\test.txt");
 				pw= new PrintWriter(fichero);
 				int ultimo =  inst.numInstances();
 				

@@ -1,8 +1,11 @@
 package sad;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+
 import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.instance.Randomize;
@@ -25,12 +28,17 @@ public class Lectura {
 		
 		// 1.2. Open the file
 		FileReader fi=null;
+		String path = null;
+		
+		System.out.println("Introduce el path del fichero .arff(ten en cuenta que los slash deben ir al reves '/':");
+		BufferedReader bfr = new BufferedReader(new InputStreamReader(System.in));   
+		path = bfr.readLine(); 
+		
 		try {
-			fi= new FileReader("C:\\Users\\jonathan\\Downloads\\breast-cancer.arff"); //(args[0]) <-> ("~/software/weka-3-6-9/data/breast-cancer.arff" )
+			fi= new FileReader(path); //(args[0]) <-> ("~/software/weka-3-6-9/data/breast-cancer.arff" )
 		} catch (FileNotFoundException e) {
 				System.out.println("ERROR: Revisar path del fichero de datos:"/*+ruta*/);
 		}
-		
 		// 1.3. Load the instances
 		Instances data=null;
 		try {
