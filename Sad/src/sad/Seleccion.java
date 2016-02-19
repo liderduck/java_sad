@@ -38,10 +38,6 @@ public class Seleccion {
 	public Instances nTNOm(Instances data) throws Exception{
 		
 		NumericToNominal convert= new NumericToNominal();
-		String[] options= new String[2];
-        options[0]="-R";
-        options[1]="1-2";
-        convert.setOptions(options);
         convert.setInputFormat(data);
         Instances newData=Filter.useFilter(data, convert);
 		return newData;
