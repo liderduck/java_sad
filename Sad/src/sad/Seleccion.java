@@ -1,7 +1,7 @@
 package sad;
 
+import java.util.ArrayList;
 import java.util.Random;
-
 import weka.attributeSelection.BestFirst;
 import weka.attributeSelection.CfsSubsetEval;
 import weka.classifiers.Classifier;
@@ -12,11 +12,11 @@ import weka.core.EditDistance;
 import weka.core.EuclideanDistance;
 import weka.core.Instances;
 import weka.core.ManhattanDistance;
-import weka.core.Tag;
 import weka.core.neighboursearch.LinearNNSearch;
 import weka.filters.Filter;
 import weka.core.SelectedTag;
 import weka.filters.supervised.attribute.AttributeSelection;
+import weka.filters.unsupervised.attribute.NumericToNominal;
 //AQUI ARRIBA VEMOS LA RUTA DEL FILTRO QUE VAMOS A USAR
 public class Seleccion {
 	Results resultados = new Results();
@@ -34,7 +34,18 @@ public class Seleccion {
 		
 		return newData;
 	}
-	
+
+	public Instances nTNOm(Instances data) throws Exception{
+		
+		NumericToNominal convert= new NumericToNominal();
+		String[] options= new String[2];
+        options[0]="-R";
+        options[1]="1-2";
+        convert.setOptions(options);
+        convert.setInputFormat(data);
+        Instances newData=Filter.useFilter(data, convert);
+		return newData;
+	}
 	//kfold de parametro 10, hay que cmbiar el estimador que le entra, ahora esta generico, pero se puede poner IBk o NaiveBayes
 	public Evaluation evalKFold (Instances dataSel,Classifier estimador) throws Exception{
 		
@@ -59,107 +70,104 @@ public class Seleccion {
 		int mejorK=1;
 		int mejorDis=0;
 		String mejorDistancia="";
-		
-		estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk empezamos x el minimo 2
-		evaluator = evalKFold(dataSel, estimador);//usamos el crosvalidation
-		mejorFM=evaluator.fMeasure(0);//cogemos como mejor fmeasure la primera por defecto para ir comprobando hay que pasarle la clase prioritaria en este caso 0
-		
+		int mejorSelTag=0;
+		String mejorDisW="";
+		LinearNNSearch distancia= new LinearNNSearch();
+
 		//creamos las 4 distancias
 		EuclideanDistance euclDis= new EuclideanDistance();
 		ManhattanDistance manhDis = new ManhattanDistance();
 		EditDistance edDis = new EditDistance();
 		ChebyshevDistance chebDis = new ChebyshevDistance();
-	
 		
-		/*int WEIGHT_NONE = 1;
-		  /** weight by 1/distance. */
-		//int WEIGHT_INVERSE = 2;
-		  /** weight by 1-distance. */
-		//int WEIGHT_SIMILARITY = 4;
-		  /** possible instance weighting methods. */
-		/*Tag [] TAGS_WEIGHTING = {
-		    new Tag(WEIGHT_NONE, "No distance weighting"),
-		    new Tag(WEIGHT_INVERSE, "Weight by 1/distance"),
-		    new Tag(WEIGHT_SIMILARITY, "Weight by 1-distance")
-		};
-		*/
-		SelectedTag sl = new SelectedTag(1,IBk.TAGS_WEIGHTING);
-
+		//creamos para la W
+		ArrayList<Integer> tagDis= new ArrayList<Integer>();//arraylist para los valores del selectedtag
+		tagDis.add(1);
+		tagDis.add(2);
+		tagDis.add(4);
 		
-	//creamos este for para ir pasando entre las distancias
-	//	for (int z=0;z<4;z++){
-		int z=0;
+		estimador.setKNN(1);//esto sirve para añadir los vecinos al ibk empezamos x el minimo 1
+		evaluator = evalKFold(dataSel, estimador);//usamos el crosvalidation
+		mejorFM=evaluator.weightedFMeasure();//cogemos como mejor fmeasure la primera por defecto para ir comprobando
+		mejorFM=Math.rint(mejorFM*1000)/1000;//truncar a 3 decimales
+	for (int t=0;t<tagDis.size();t++){
+		if (t==0){
+			SelectedTag sl1 = new SelectedTag(1,IBk.TAGS_WEIGHTING);//no distance
+			estimador.setDistanceWeighting(sl1);
+		}else if(t==1){
+			SelectedTag sl2 = new SelectedTag(2,IBk.TAGS_WEIGHTING);//1/distance
+			estimador.setDistanceWeighting(sl2);
+		}else if(t==2){
+			SelectedTag sl3 = new SelectedTag(4,IBk.TAGS_WEIGHTING);//1-distance
+			estimador.setDistanceWeighting(sl3);
+		}
+		
+		for (int z=0;z<4;z++){//creamos este for para ir pasando entre las distancias
 			if (z==0){
 				//preparamos el parametro de la distancia con una de las 4 escogidas arriba y preparamos el estimador
-				LinearNNSearch distancia= new LinearNNSearch();
 				distancia.setDistanceFunction(euclDis);
-				estimador.setNearestNeighbourSearchAlgorithm(distancia);
-			}else if (z==1){
-				LinearNNSearch distancia= new LinearNNSearch();
+			}else if ((z==1) && (t!=2)){//como dijo josu manhattan con 1-dis da error asik lo saltamos en tal caso
 				distancia.setDistanceFunction(manhDis);
-				estimador.setNearestNeighbourSearchAlgorithm(distancia);
 			}else if (z==2){
-				LinearNNSearch distancia= new LinearNNSearch();
 				distancia.setDistanceFunction(edDis);
-				estimador.setNearestNeighbourSearchAlgorithm(distancia);
 			}else if(z==3){
-				LinearNNSearch distancia= new LinearNNSearch();
 				distancia.setDistanceFunction(chebDis);
-				estimador.setNearestNeighbourSearchAlgorithm(distancia);
 			}
-			estimador.setDistanceWeighting(sl);
-			
-			for(int k=2;k<=10;k++){//aumenta los vecinos y los va probando
+			estimador.setNearestNeighbourSearchAlgorithm(distancia);
+
+			for(int k=2;k<=dataSel.numInstances();k++){//aumenta los vecinos y los va probando
 				estimador.setKNN(k);
 				evaluator = evalKFold(dataSel, estimador);
-				actualFM=evaluator.weightedFMeasure();
-				actualFM=Math.rint(actualFM*1000)/1000;//truncar a 2 decimales
+				actualFM=evaluator.weightedFMeasure();		
+				actualFM=Math.rint(actualFM*1000)/1000;//truncar a 3 decimales
 				if (actualFM>mejorFM){
 					mejorFM=actualFM;
 					mejorK=k;
 					mejorDis=z;
+					mejorSelTag=t;
 				}
 			}
-//		}
-		
-		System.out.println("La mejor f-measure es: "+mejorFM+" con una K de: "+mejorK+" en la distancia: "+ mejorDistancia);
-		System.out.println("estos son los datos para la K:");
+		}
+	}
+		//PAra generar los datos del resumen que veremos por pantalla debemos parametrizar el estimador
+		//con los mejores parametros conseguidos anteriormente.
 		if (mejorDis==0){
 			mejorDistancia="Euclidean";
-			LinearNNSearch distancia= new LinearNNSearch();
 			distancia.setDistanceFunction(euclDis);
-			estimador.setNearestNeighbourSearchAlgorithm(distancia);
-			estimador.setKNN(mejorK);
-			evaluator = evalKFold(dataSel, estimador);
-			resultados.imprimirResultados(dataSel, evaluator);
 		}else if (mejorDis==1){
 			mejorDistancia="Manhattan";
-			LinearNNSearch distancia= new LinearNNSearch();
 			distancia.setDistanceFunction(manhDis);
-			estimador.setNearestNeighbourSearchAlgorithm(distancia);
-			estimador.setKNN(mejorK);
-			evaluator = evalKFold(dataSel, estimador);
-			resultados.imprimirResultados(dataSel, evaluator);
 		}else if (mejorDis==2){
 			mejorDistancia="EditDistance";
-			LinearNNSearch distancia= new LinearNNSearch();
 			distancia.setDistanceFunction(edDis);
-			estimador.setNearestNeighbourSearchAlgorithm(distancia);
-			estimador.setKNN(mejorK);
-			evaluator = evalKFold(dataSel, estimador);
-			resultados.imprimirResultados(dataSel, evaluator);
 		}else if (mejorDis==3){
 			mejorDistancia="Chebyshev";
-			LinearNNSearch distancia= new LinearNNSearch();
 			distancia.setDistanceFunction(chebDis);
-			estimador.setNearestNeighbourSearchAlgorithm(distancia);
-			estimador.setKNN(mejorK);
-			evaluator = evalKFold(dataSel, estimador);
-			resultados.imprimirResultados(dataSel, evaluator);
 		}
+			
+				
+		if(mejorSelTag==0){
+			mejorDisW="Non distance weighting";
+			SelectedTag sl1 = new SelectedTag(1,IBk.TAGS_WEIGHTING);//no distance
+			estimador.setDistanceWeighting(sl1);
+		}else if(mejorSelTag==1){
+			mejorDisW="1/distance";
+			SelectedTag sl2 = new SelectedTag(2,IBk.TAGS_WEIGHTING);//1/distance
+			estimador.setDistanceWeighting(sl2);
+		}else if(mejorSelTag==2){
+			mejorDisW="1-distance";
+			SelectedTag sl3 = new SelectedTag(4,IBk.TAGS_WEIGHTING);//1-distance
+			estimador.setDistanceWeighting(sl3);
+		}
+		estimador.setKNN(mejorK);
+		estimador.setNearestNeighbourSearchAlgorithm(distancia);
+		evaluator = evalKFold(dataSel, estimador);
 		
+		System.out.println();
+		System.out.println("La mejor WF-measure es: "+mejorFM+" con una K de: "+mejorK+" en la distancia: "+ mejorDistancia + " con una peso de distancia de:  " +mejorDisW);
+		System.out.println("estos son los datos para la K con los parametros anteriormente conseguidos:");
 		
-		//
+		resultados.imprimirResultados(dataSel, evaluator);
 
 	}
 }

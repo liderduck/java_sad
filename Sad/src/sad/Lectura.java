@@ -63,8 +63,7 @@ public class Lectura {
 	
 		
 		// 1.6. Especificamos que la clase es el ultimo
-		datosRan.setClassIndex(data.numAttributes()-1);
-				
+		datosRan.setClassIndex(data.numAttributes()-1);	
 		return datosRan;
 	}
 
