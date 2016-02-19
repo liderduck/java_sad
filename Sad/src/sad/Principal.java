@@ -35,21 +35,15 @@ import weka.classifiers.lazy.IBk;
 	    	Instances data;
 	    	data = lect.cargarDatos();
 	    	
-	    	
-	    	/////////////Seleccion del Sub-set/////////////
-			//tambien aplica el filtro selectAtributes ojo
-	//    	Instances dataS = sel.selSubSet(data);  en este caso empeora el resultado
-	    	
-	    	//pasamos a nominal todos las instancias
-	    	Instances dataSel = sel.nTNOm(data);
+	    	/////////////Seleccion del Sub-set con filtro selectedAtributes/////////////
+	    	Instances dataSel = sel.selSubSet(data);  //en este caso empeora el resultado
 	    	
 	    	/////////////Creamos el clasificador/////////////
 	    	//NaiveBayes estimador = new NaiveBayes();//Naive Bayes
-	    	IBk estimador = new IBk();
+	    	IBk estimador = new IBk();//KNN
 	    	
-	    	
-	    	/////////////Creamos el evaluador kfold de 10 valores, pasandole los datos y el  clasificador
-	    	Evaluation evaluator =sel.evalKFold(dataSel, estimador);
+	    	/////////////Creamos el evaluador con los datos/////////////    	
+	    	Evaluation evaluator = new Evaluation(dataSel);
 	    	sel.mejorK(estimador,dataSel,evaluator);//caso particular para el IBk
 	    	
 	    	/////////////Imprime resultados por pantalla./////////////
