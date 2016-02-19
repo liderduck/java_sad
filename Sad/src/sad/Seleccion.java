@@ -105,7 +105,8 @@ public class Seleccion {
 		}
 		
 		
-		
+		System.out.println("La mejor f-measure es: "+mejorFM+" con una K de: "+mejorK+" en la distancia: "+ mejorDistancia);
+		System.out.println("estos son los datos para la K:");
 		if (mejorDis==0){
 			mejorDistancia="Euclidean";
 			LinearNNSearch distancia= new LinearNNSearch();
@@ -140,7 +141,7 @@ public class Seleccion {
 			resultados.imprimirResultados(dataSel, evaluator);
 		}
 		
-		System.out.println("La mejor f-measure es: "+mejorFM+" con una K de: "+mejorK+" en la distancia: "+ mejorDistancia);
+		
 		//
 
 	}
