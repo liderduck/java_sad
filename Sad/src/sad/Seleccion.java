@@ -12,8 +12,10 @@ import weka.core.EditDistance;
 import weka.core.EuclideanDistance;
 import weka.core.Instances;
 import weka.core.ManhattanDistance;
+import weka.core.Tag;
 import weka.core.neighboursearch.LinearNNSearch;
 import weka.filters.Filter;
+import weka.core.SelectedTag;
 import weka.filters.supervised.attribute.AttributeSelection;
 //AQUI ARRIBA VEMOS LA RUTA DEL FILTRO QUE VAMOS A USAR
 public class Seleccion {
@@ -67,8 +69,7 @@ public class Seleccion {
 		ManhattanDistance manhDis = new ManhattanDistance();
 		EditDistance edDis = new EditDistance();
 		ChebyshevDistance chebDis = new ChebyshevDistance();
-		
-		
+	
 		//creamos este for para ir pasando entre las distancias
 		for (int z=0;z<4;z++){
 			if (z==0){
@@ -94,6 +95,7 @@ public class Seleccion {
 				estimador.setKNN(k);
 				evaluator = evalKFold(dataSel, estimador);
 				actualFM=evaluator.fMeasure(0);
+				actualFM=Math.rint(actualFM*1000)/1000;//truncar a 2 decimales
 				if (actualFM>mejorFM){
 					mejorFM=actualFM;
 					mejorK=k;

@@ -30,7 +30,7 @@ public class Lectura {
 		FileReader fi=null;
 		String path = null;
 		
-		System.out.println("Introduce el path del fichero .arff(ten en cuenta que los slash deben ir al reves '/':");
+		System.out.println("Introduce el path del fichero .arff con su extension");
 		BufferedReader bfr = new BufferedReader(new InputStreamReader(System.in));   
 		path = bfr.readLine(); 
 		
