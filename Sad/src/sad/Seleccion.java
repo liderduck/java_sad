@@ -70,8 +70,25 @@ public class Seleccion {
 		EditDistance edDis = new EditDistance();
 		ChebyshevDistance chebDis = new ChebyshevDistance();
 	
-		//creamos este for para ir pasando entre las distancias
-		for (int z=0;z<4;z++){
+		
+		/*int WEIGHT_NONE = 1;
+		  /** weight by 1/distance. */
+		//int WEIGHT_INVERSE = 2;
+		  /** weight by 1-distance. */
+		//int WEIGHT_SIMILARITY = 4;
+		  /** possible instance weighting methods. */
+		/*Tag [] TAGS_WEIGHTING = {
+		    new Tag(WEIGHT_NONE, "No distance weighting"),
+		    new Tag(WEIGHT_INVERSE, "Weight by 1/distance"),
+		    new Tag(WEIGHT_SIMILARITY, "Weight by 1-distance")
+		};
+		*/
+		SelectedTag sl = new SelectedTag(1,IBk.TAGS_WEIGHTING);
+
+		
+	//creamos este for para ir pasando entre las distancias
+	//	for (int z=0;z<4;z++){
+		int z=0;
 			if (z==0){
 				//preparamos el parametro de la distancia con una de las 4 escogidas arriba y preparamos el estimador
 				LinearNNSearch distancia= new LinearNNSearch();
@@ -90,11 +107,12 @@ public class Seleccion {
 				distancia.setDistanceFunction(chebDis);
 				estimador.setNearestNeighbourSearchAlgorithm(distancia);
 			}
+			estimador.setDistanceWeighting(sl);
 			
-			for(int k=2;k<=dataSel.numInstances();k++){//aumenta los vecinos y los va probando
+			for(int k=2;k<=10;k++){//aumenta los vecinos y los va probando
 				estimador.setKNN(k);
 				evaluator = evalKFold(dataSel, estimador);
-				actualFM=evaluator.fMeasure(0);
+				actualFM=evaluator.weightedFMeasure();
 				actualFM=Math.rint(actualFM*1000)/1000;//truncar a 2 decimales
 				if (actualFM>mejorFM){
 					mejorFM=actualFM;
@@ -102,8 +120,7 @@ public class Seleccion {
 					mejorDis=z;
 				}
 			}
-		}
-		
+//		}
 		
 		System.out.println("La mejor f-measure es: "+mejorFM+" con una K de: "+mejorK+" en la distancia: "+ mejorDistancia);
 		System.out.println("estos son los datos para la K:");
