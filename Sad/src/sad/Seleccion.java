@@ -162,7 +162,7 @@ public class Seleccion {
 		System.out.println();
 		System.out.println("La mejor WF-measure es: "+mejorFM+" con una K de: "+mejorK+" en la distancia: "+ mejorDistancia + " con una peso de distancia de:  " +mejorDisW);
 		System.out.println("estos son los datos para la K con los parametros anteriormente conseguidos:");
-		
+		System.out.println();
 		resultados.imprimirResultados(dataSel, evaluator);
 
 	}

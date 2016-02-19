@@ -38,7 +38,7 @@ import weka.classifiers.lazy.IBk;
 	    	
 	    	/////////////Seleccion del Sub-set/////////////
 			//tambien aplica el filtro selectAtributes ojo
-	//    	Instances dataS = sel.selSubSet(data);
+	//    	Instances dataS = sel.selSubSet(data);  en este caso empeora el resultado
 	    	
 	    	//pasamos a nominal todos las instancias
 	    	Instances dataSel = sel.nTNOm(data);
