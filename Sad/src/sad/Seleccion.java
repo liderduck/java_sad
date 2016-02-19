@@ -17,7 +17,7 @@ import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
 //AQUI ARRIBA VEMOS LA RUTA DEL FILTRO QUE VAMOS A USAR
 public class Seleccion {
-		
+	Results resultados = new Results();
 	//esta clase es para pasar el filtro atributeselection
 	public Instances selSubSet(Instances data) throws Exception{
 		
@@ -102,14 +102,40 @@ public class Seleccion {
 			}
 		}
 		
+		
+		
 		if (mejorDis==0){
 			mejorDistancia="Euclidean";
+			LinearNNSearch distancia= new LinearNNSearch();
+			distancia.setDistanceFunction(euclDis);
+			estimador.setNearestNeighbourSearchAlgorithm(distancia);
+			estimador.setKNN(mejorK);
+			evaluator = evalKFold(dataSel, estimador);
+			resultados.imprimirResultados(dataSel, evaluator);
 		}else if (mejorDis==1){
 			mejorDistancia="Manhattan";
+			LinearNNSearch distancia= new LinearNNSearch();
+			distancia.setDistanceFunction(manhDis);
+			estimador.setNearestNeighbourSearchAlgorithm(distancia);
+			estimador.setKNN(mejorK);
+			evaluator = evalKFold(dataSel, estimador);
+			resultados.imprimirResultados(dataSel, evaluator);
 		}else if (mejorDis==2){
 			mejorDistancia="EditDistance";
+			LinearNNSearch distancia= new LinearNNSearch();
+			distancia.setDistanceFunction(edDis);
+			estimador.setNearestNeighbourSearchAlgorithm(distancia);
+			estimador.setKNN(mejorK);
+			evaluator = evalKFold(dataSel, estimador);
+			resultados.imprimirResultados(dataSel, evaluator);
 		}else if (mejorDis==3){
 			mejorDistancia="Chebyshev";
+			LinearNNSearch distancia= new LinearNNSearch();
+			distancia.setDistanceFunction(chebDis);
+			estimador.setNearestNeighbourSearchAlgorithm(distancia);
+			estimador.setKNN(mejorK);
+			evaluator = evalKFold(dataSel, estimador);
+			resultados.imprimirResultados(dataSel, evaluator);
 		}
 		
 		System.out.println("La mejor f-measure es: "+mejorFM+" con una K de: "+mejorK+" en la distancia: "+ mejorDistancia);

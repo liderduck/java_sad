@@ -27,8 +27,8 @@ import weka.classifiers.lazy.IBk;
 		
 	    public static void main(String[] args) throws Exception {
 			Seleccion sel=new Seleccion();
-	    	Results resultados = new Results();
-	    	Escribir esc=new Escribir();
+	  // 	Results resultados = new Results();
+	  //  	Escribir esc=new Escribir();
 	    	
 	    	/////////////Lectura de datos y aplica el filtro RANDOMIZE/////////////
 	    	Lectura lect= new Lectura();
@@ -49,9 +49,10 @@ import weka.classifiers.lazy.IBk;
 	    	Evaluation evaluator =sel.evalKFold(dataSel, estimador);
 	    	sel.mejorK(estimador,dataSel,evaluator);//caso particular para el IBk
 	    	
-	    	/////////////Imprime resultados./////////////
+	    	/////////////Imprime resultados por pantalla./////////////
 		//	resultados.imprimirResultados(dataSel, evaluator);//en estimado entra ahora nayvebayes pero debera cambiar.
-			
+
+/*			parte del hold out
 System.out.println("///////////////////////////////");
 			
 			/////////////ahora usando un Hold out al 70%/////////////
@@ -76,6 +77,7 @@ System.out.println("///////////////////////////////");
 			
 			/////////////Imprime los resultados del hold out/////////////
 	//		resultados.imprimirResultados(test, evaluator2);
+*/
 	    }
 }
 
