@@ -13,19 +13,7 @@ import weka.filters.unsupervised.instance.Randomize;
 public class Lectura {
 
 	public Instances cargarDatos() throws Exception{
-		/////////////////////////////////////////////////////////////
-		// 1. LOAD DATA FILE
-		//  HACER!!!! Bloque 1: como sub-clase
-		// 1.1. Get the path of the .arff (instances) from the command line
-		/*
-		if( args.length < 1 ){
-			System.out.println("OBJETIVO: Seleccionar atributos (AttributeSelection<-CfsSubsetEval, search<-BestFirst) y Evaluar clasificador NaiveBayes con 10-fold cross-validation.");
-			System.out.println("ARGUMENTOS:");
-			System.out.println("\t1. Path del fichero de entrada: datos en formato .arff");
-			return; 
-		}
-		*/		
-		
+	
 		// 1.2. Open the file
 		FileReader fi=null;
 		String path = null;

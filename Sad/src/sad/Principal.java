@@ -32,11 +32,11 @@ import weka.classifiers.lazy.IBk;
 	    	
 	    	/////////////Lectura de datos y aplica el filtro RANDOMIZE/////////////
 	    	Lectura lect= new Lectura();
-	    	Instances data;
-	    	data = lect.cargarDatos();
+	    	Instances dataSel;
+	    	dataSel = lect.cargarDatos();
 	    	
 	    	/////////////Seleccion del Sub-set con filtro selectedAtributes/////////////
-	    	Instances dataSel = sel.selSubSet(data);  //en este caso empeora el resultado
+	//    	Instances dataSel = sel.selSubSet(data);  //en este caso empeora el resultado
 	    	
 	    	/////////////Creamos el clasificador/////////////
 	    	//NaiveBayes estimador = new NaiveBayes();//Naive Bayes
