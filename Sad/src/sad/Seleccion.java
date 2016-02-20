@@ -19,6 +19,7 @@ import weka.filters.supervised.attribute.AttributeSelection;
 //AQUI ARRIBA VEMOS LA RUTA DEL FILTRO QUE VAMOS A USAR
 public class Seleccion {
 	Results resultados = new Results();
+	
 	//esta clase es para pasar el filtro atributeselection
 	public Instances selSubSet(Instances data) throws Exception{
 		
@@ -57,6 +58,7 @@ public class Seleccion {
 		int mejorSelTag=0;
 		String mejorDistancia="";
 		String mejorDisW="";
+		int por=0;
 		
 		LinearNNSearch distancia= new LinearNNSearch();
 
@@ -87,6 +89,8 @@ public class Seleccion {
 				}
 			}
 		}
+		por=por+33;
+	 System.out.println("Porcentaje completado " + por);
 	}
 		//PAra generar los datos del resumen que veremos por pantalla debemos parametrizar el estimador
 		//con los mejores parametros conseguidos anteriormente.
@@ -116,10 +120,12 @@ public class Seleccion {
 	}
 	
 	public LinearNNSearch obtDis(int num,LinearNNSearch distancia,int t) throws Exception{
+		
 		//creamos las 4 distancias
 		EuclideanDistance euclDis= new EuclideanDistance();
 		ManhattanDistance manhDis = new ManhattanDistance();
 		ChebyshevDistance chebDis = new ChebyshevDistance();
+		
 		if (num==0){	
 			distancia.setDistanceFunction(euclDis);
 		}else if ((num==1) && (t!=2)){//como dijo josu manhattan con 1-dis da error asik lo saltamos en tal caso
